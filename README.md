@@ -1,299 +1,528 @@
-=============================================================
-PROJETO PARTE 1: Cálculo de Volatilidades Condicional
-Estocásticas com Base na Volatilidade Diária do PLD
-=============================================================
+Projeto de Volatilidade e Precificação de Opções de Energia (PLD)
 
 Autor: Prof. Paulo Cavalcante
 Versão: 2026
-Arquitetura: 5 Códigos Python independentes, 1 para cada modelo
 
--------------------------------------------------------------
-DESCRIÇÃO GERAL DO PROJETO
--------------------------------------------------------------
-O programa tem como objetivo central estimar a volatilidade condicional do Preço de Liquidação das Diferenças (PLD) para o Submercado Sudeste do Sistema Interligado Nacional (SIN), utilizando os 5 modelos de volatilidade condicional estocástica (HAR-RV, EGARCH, GJR, EGARCH-t e GJR-t), a partir das volatilidades diárias realizadas do PLD:
+Este repositório está dividido em duas partes principais:
+
+Parte 1: Cálculo de volatilidades condicionais estocásticas com base na volatilidade diária realizada do PLD.
+Parte 2: Precificação de opções de energia sobre o PLD via Monte Carlo, utilizando os modelos de volatilidade calculados na Parte 1.
+PARTE 1 — Cálculo de Volatilidades Condicionais Estocásticas
+1. Descrição Geral
+
+O objetivo da Parte 1 é estimar a volatilidade condicional do Preço de Liquidação das Diferenças (PLD) para o Submercado Sudeste do Sistema Interligado Nacional (SIN).
+
+São utilizados cinco modelos de volatilidade:
+
+HAR-RV
+EGARCH
+GJR
+EGARCH-t
+GJR-t
+
+Os modelos utilizam como base as séries de volatilidade diária realizada do PLD.
 
 Cada modelo produz:
-	- volatilidades realizada PLD
-	- volatilidade diárias de cada modelo
-	- volatilidade mensal de cada modelo
-	- volatilidade anual de cada modelo
-	- volatilidade anualizada de cada modelo
 
--------------------------------------------------------------
-REQUISITOS DE PACOTES PYTHON
--------------------------------------------------------------
+volatilidade realizada do PLD;
+volatilidade diária estimada pelo modelo;
+volatilidade semanal;
+volatilidade mensal;
+volatilidade anual;
+volatilidade anualizada por janela.
 
-pip install pandas numpy math scipy arch openpyxl os matplotlib seaborn plotly xlsxwriter docx docx2pdf warnings datetime
+A arquitetura da Parte 1 é composta por 5 códigos independentes, sendo um para cada modelo.
 
-Se quiser converter automaticamente para PDF:
+2. Requisitos de Pacotes Python
+
+Instale os principais pacotes utilizados no projeto:
+
+pip install pandas numpy scipy arch openpyxl matplotlib seaborn plotly xlsxwriter python-docx docx2pdf
+
+
+Observação: math, os, warnings e datetime são módulos da biblioteca padrão do Python e não precisam ser instalados via pip.
+
+Conversão automática para PDF
+
+Para gerar automaticamente o relatório em PDF a partir do DOCX:
+
 pip install docx2pdf
-(Windows recomendado)
 
--------------------------------------------------------------
-ESTRUTURA DE PASTAS
--------------------------------------------------------------
 
+Windows: recomendado para a conversão automática utilizando o docx2pdf.
+
+3. Estrutura de Pastas
 /1-CALCULO_VOLATILIDADES/
-	/EGARCH/
-		CÁLCULO_VOLATILIDADE_EGARCH.ipynb
-		PLD_volatilidades_EGARCH
-		PREÇO MED DIARIO PLD  VERTICAL PERIODO 17-04-18 A 03-06-25
-	/EGARCH-t/
-		CÁLCULO VOLATILIDADE_EGARCH-t
-		Volatilidades_EGARCH_t_1W1M1Y
-		PREÇO MED DIARIO PLD  VERTICAL PERIODO 17-04-18 A 03-06-25
-	/GJR/
-		CÁLCULO_VOLATILIDADE_GJR.ipynb
-		PLD_volatilidades_GJR
-		PREÇO MED DIARIO PLD  VERTICAL PERIODO 17-04-18 A 03-06-25
-	/GJR-t/
-		CÁLCULO_VOLATILIDADE_GJR_t.ipynb
-		PLD_volatilidades_GJR-t
-		PREÇO MED DIARIO PLD  VERTICAL PERIODO 17-04-18 A 03-06-25
-	/HAR-RV/
-		CÁLCULO_VOLATILIDADE_HAR_RV.ipynb
-		PLD_volatilidades_HAR-RV
-		PREÇO MED DIARIO PLD  VERTICAL PERIODO 17-04-18 A 03-06-25
+│
+├── EGARCH/
+│   ├── CALCULO_VOLATILIDADE_EGARCH.ipynb
+│   ├── PLD_volatilidades_EGARCH.xlsx
+│   └── PRECO_MED_DIARIO_PLD_VERTICAL_PERIODO_17-04-18_A_03-06-25.xlsx
+│
+├── EGARCH-t/
+│   ├── CALCULO_VOLATILIDADE_EGARCH-t.ipynb
+│   ├── Volatilidades_EGARCH_t_1W1M1Y.xlsx
+│   └── PRECO_MED_DIARIO_PLD_VERTICAL_PERIODO_17-04-18_A_03-06-25.xlsx
+│
+├── GJR/
+│   ├── CALCULO_VOLATILIDADE_GJR.ipynb
+│   ├── PLD_volatilidades_GJR.xlsx
+│   └── PRECO_MED_DIARIO_PLD_VERTICAL_PERIODO_17-04-18_A_03-06-25.xlsx
+│
+├── GJR-t/
+│   ├── CALCULO_VOLATILIDADE_GJR_t.ipynb
+│   ├── PLD_volatilidades_GJR-t.xlsx
+│   └── PRECO_MED_DIARIO_PLD_VERTICAL_PERIODO_17-04-18_A_03-06-25.xlsx
+│
+└── HAR-RV/
+    ├── CALCULO_VOLATILIDADE_HAR_RV.ipynb
+    ├── PLD_volatilidades_HAR-RV.xlsx
+    └── PRECO_MED_DIARIO_PLD_VERTICAL_PERIODO_17-04-18_A_03-06-25.xlsx
 
--------------------------------------------------------------
-EXECUÇÃO DOS CÓDIGOS
--------------------------------------------------------------
 
-=============================================================
-1) EGARCH
-=============================================================
-notebook CÁLCULO_VOLATILIDADE_EGARCH.ipynb
+Os nomes acima foram padronizados para facilitar a leitura. Caso os arquivos reais tenham nomes diferentes, mantenha no README os nomes exatamente iguais aos existentes no repositório.
 
-Saída:
-    PLD_volatilidades_EGARCHC.xlsx
-=============================================================
-1) EGARCH-t
-=============================================================
-notebook CÁLCULO VOLATILIDADE_EGARCH-t
+4. Execução dos Modelos
 
-Saída:
-    Volatilidades_EGARCH_t_1W1M1Y.xlsx
-=============================================================
-1) GJR
-=============================================================
-notebook CÁLCULO_VOLATILIDADE_GJR.ipynb
+Cada modelo da Parte 1 pode ser executado de forma independente.
 
-Saída:
-    PLD_volatilidades_GJR.xlsx
-=============================================================
-1) GJR-t
-=============================================================
-notebook CÁLCULO_VOLATILIDADE_GJR_t.ipynb
+4.1 EGARCH
 
-Saída:
-    PLD_volatilidades_GJR-t.xlsx
-=============================================================
-1) HAR-RV
-=============================================================
-notebook CÁLCULO_VOLATILIDADE_HAR_RV.ipynb
+Notebook:
 
-Saída:
-    PLD_volatilidades_HAR-RV.xlsx
+CALCULO_VOLATILIDADE_EGARCH.ipynb
 
-OBSERVAÇÕES IMPORTANTES
--------------------------------------------------------------
 
-• Os pastas são independentes
+Saída principal:
 
-• Os dados de entrada encontram-se nas pastas de cada volatilidade.
+PLD_volatilidades_EGARCH.xlsx
 
-=============================================================
-PROJETO PARTE 2: Precificação de Opções de Energia (PLD)
-         via Monte Carlo + Modelos Avançados de Volatilidade
-=============================================================
+4.2 EGARCH-t
 
-Autor: Prof. Paulo Cavalcante
-Versão: 2026
-Arquitetura Modular (9 Módulos Python)
+Notebook:
 
--------------------------------------------------------------
-DESCRIÇÃO GERAL DO PROJETO
--------------------------------------------------------------
-Este projeto implementa um pipeline completo para precificação
-de opções CALL e PUT sobre o PLD (Preço de Liquidação das Diferenças)
-utilizando o Método de Monte Carlo, com duas abordagens:
+CALCULO_VOLATILIDADE_EGARCH-t.ipynb
 
-  - OPÇÃO A → Monte Carlo com volatilidade anualizada constante
-  - OPÇÃO B → Monte Carlo com volatilidade diária dinâmica (σ(t))
 
-Cinco modelos de volatilidade são considerados:
-    1. HAR-RV
-    2. EGARCH
-    3. GJR
-    4. EGARCH-t
-    5. GJR-t
+Saída principal:
 
-Cada modelo produz:
-    - volatilidade diária
-    - volatilidade semanal, mensal, anual
-    - volatilidade anualizada por janela
+Volatilidades_EGARCH_t_1W1M1Y.xlsx
 
-O pipeline calcula:
-    - Preços CALL / PUT (MC)
-    - Payoff realizado
-    - Erros (CALL/PUT)
-    - Métricas (RMSE, MAE, MAPE, SMAPE)
-    - Rankings por ano/horizonte/modelo
-    - Heatmaps
-    - Dashboard Excel
-    - Dashboard Plotly (HTML)
-    - Relatório técnico completo (Word/PDF)
+4.3 GJR
 
--------------------------------------------------------------
-REQUISITOS DE PACOTES PYTHON
--------------------------------------------------------------
+Notebook:
 
-pip install pandas numpy matplotlib seaborn plotly xlsxwriter docx docx2pdf
+CALCULO_VOLATILIDADE_GJR.ipynb
 
-Se quiser converter automaticamente para PDF:
+
+Saída principal:
+
+PLD_volatilidades_GJR.xlsx
+
+4.4 GJR-t
+
+Notebook:
+
+CALCULO_VOLATILIDADE_GJR_t.ipynb
+
+
+Saída principal:
+
+PLD_volatilidades_GJR-t.xlsx
+
+4.5 HAR-RV
+
+Notebook:
+
+CALCULO_VOLATILIDADE_HAR_RV.ipynb
+
+
+Saída principal:
+
+PLD_volatilidades_HAR-RV.xlsx
+
+5. Observações Importantes — Parte 1
+As pastas dos modelos são independentes.
+Cada modelo possui seu próprio código/notebook.
+Os dados de entrada encontram-se nas respectivas pastas dos modelos.
+As planilhas geradas na Parte 1 são utilizadas como entrada para a Parte 2.
+Recomenda-se manter os arquivos de entrada e saída organizados dentro das respectivas pastas.
+PARTE 2 — Precificação de Opções de Energia sobre o PLD
+6. Descrição Geral
+
+A Parte 2 implementa um pipeline completo para precificação de opções CALL e PUT sobre o PLD, utilizando o Método de Monte Carlo e os modelos de volatilidade estimados na Parte 1.
+
+São consideradas duas abordagens principais:
+
+Opção A — Volatilidade Anualizada Constante
+
+O processo de Monte Carlo utiliza uma volatilidade anualizada constante:
+
+σ(t) = σ_anualizado
+
+Opção B — Volatilidade Diária Dinâmica
+
+O processo de Monte Carlo utiliza uma volatilidade que varia ao longo do tempo:
+
+σ(t) = volatilidade diária dinâmica
+
+7. Modelos de Volatilidade
+
+A Parte 2 utiliza os cinco modelos calculados na Parte 1:
+
+HAR-RV
+EGARCH
+GJR
+EGARCH-t
+GJR-t
+
+Cada modelo fornece informações de volatilidade em diferentes horizontes:
+
+diária;
+semanal;
+mensal;
+anual;
+anualizada por janela.
+8. Resultados Gerados
+
+O pipeline da Parte 2 calcula e/ou gera:
+
+preços de opções CALL;
+preços de opções PUT;
+payoff realizado;
+erros de precificação de CALL;
+erros de precificação de PUT;
+RMSE;
+MAE;
+MAPE;
+SMAPE;
+rankings por ano;
+rankings por horizonte;
+rankings por modelo;
+heatmaps de desempenho;
+comparação entre as abordagens A e B;
+análise de correlação entre erro de volatilidade e erro de precificação;
+dashboard Excel;
+dashboard interativo em Plotly/HTML;
+relatório técnico completo em Word/PDF.
+9. Requisitos de Pacotes Python
+
+Instale os pacotes necessários:
+
+pip install pandas numpy matplotlib seaborn plotly xlsxwriter python-docx docx2pdf
+
+
+Para conversão automática do relatório para PDF:
+
 pip install docx2pdf
-(Windows recomendado)
 
--------------------------------------------------------------
-ESTRUTURA DE PASTAS
--------------------------------------------------------------
 
+Observação: a conversão automática via docx2pdf é recomendada em ambiente Windows.
+
+10. Estrutura de Pastas da Parte 2
 /Projeto_MC_VOL/
-    01_importacao_merge.py
-    02_MC_A_sigma_constante.py
-    03_MC_B_sigma_dinamica.py
-    04_metricas.py
-    05_dashboards_excel.py
-    06_heatmaps.py
-    07_correlacao_sigma_erros.py
-    08_dashboard_plotly.py
-    09_relatorio_final_tese.py
+│
+├── 01_importacao_merge.py
+├── 02_MC_A_sigma_constante.py
+├── 03_MC_B_sigma_dinamica.py
+├── 04_metricas.py
+├── 05_dashboards_excel.py
+├── 06_heatmaps.py
+├── 07_correlacao_sigma_erros.py
+├── 08_dashboard_plotly.py
+├── 09_relatorio_final_tese.py
+│
+├── dados/
+│   ├── Volatilidades_HAR_RV_1W1M1Y.xlsx
+│   ├── Volatilidades_EGARCH_1W1M1Y.xlsx
+│   ├── Volatilidades_GJR_1W1M1Y.xlsx
+│   ├── Volatilidades_EGARCH_t_1W1M1Y.xlsx
+│   └── Volatilidades_GJR_t_1W1M1Y.xlsx
+│
+├── RESULTADOS_MC_OPCAO_A/
+│
+├── RESULTADOS_MC_OPCAO_B/
+│
+├── METRICAS_MC/
+│
+├── HEATMAPS_MC/
+│
+├── CORRELACAO_SIGMA/
+│
+├── DASHBOARDS/
+│
+└── RELATORIOS/
 
-    /dados/
-        Volatilidades_HAR_RV_1W1M1Y.xlsx
-        Volatilidades_EGARCH_1W1M1Y.xlsx
-        Volatilidades_GJR_1W1M1Y.xlsx
-        Volatilidades_EGARCH_t_1W1M1Y.xlsx
-        Volatilidades_GJR_t_1W1M1Y.xlsx
+11. Ordem de Execução dos Módulos
 
-    /RESULTADOS_MC_OPCAO_A/
-    /RESULTADOS_MC_OPCAO_B/
-    /METRICAS_MC/
-    /HEATMAPS_MC/
-    /CORRELACAO_SIGMA/
-    /DASHBOARDS/
-    /RELATORIOS/
+IMPORTANTE: a ordem de execução é obrigatória para garantir a correta geração dos arquivos intermediários e a reprodutibilidade dos resultados.
 
--------------------------------------------------------------
-ORDEM DE EXECUÇÃO DOS MÓDULOS
--------------------------------------------------------------
+11.1 Importação e Merge das Séries de Volatilidade
 
-A ORDEM É OBRIGATÓRIA PARA GARANTIR REPRODUTIBILIDADE:
+Script:
 
-=============================================================
-1) Importação e merge das séries de volatilidade
-=============================================================
 python 01_importacao_merge.py
 
-Saída gerada:
-    - df_vols_merged.parquet
 
-=============================================================
-2) Monte Carlo com σ CONSTANTE (OPÇÃO A)
-=============================================================
+Função:
+
+Importa as séries de volatilidade dos cinco modelos e realiza a consolidação das informações em uma única base.
+
+Saída:
+
+df_vols_merged.parquet
+
+11.2 Monte Carlo com Volatilidade Constante — Opção A
+
+Script:
+
 python 02_MC_A_sigma_constante.py
 
-Saídas:
-    /RESULTADOS_MC_OPCAO_A/
-         Opcoes_MC_Constante_2019.xlsx
-         ...
-         Opcoes_MC_Constante_2024.xlsx
-         Opcoes_MC_Constante_2019_2024_CONSOLIDADO.xlsx
 
-=============================================================
-3) Monte Carlo com σ DINÂMICA (OPÇÃO B)
-=============================================================
+Função:
+
+Realiza a precificação das opções utilizando volatilidade anualizada constante.
+
+Saídas:
+
+RESULTADOS_MC_OPCAO_A/
+├── Opcoes_MC_Constante_2019.xlsx
+├── ...
+├── Opcoes_MC_Constante_2024.xlsx
+└── Opcoes_MC_Constante_2019_2024_CONSOLIDADO.xlsx
+
+11.3 Monte Carlo com Volatilidade Dinâmica — Opção B
+
+Script:
+
 python 03_MC_B_sigma_dinamica.py
 
-Saídas:
-    /RESULTADOS_MC_OPCAO_B/
-         Opcoes_MC_Dinamica_2019.xlsx
-         ...
-         Opcoes_MC_Dinamica_2024.xlsx
-         Opcoes_MC_Dinamica_2019_2024_CONSOLIDADO.xlsx
 
-=============================================================
-4) Cálculo de métricas (RMSE, MAE, MAPE, SMAPE)
-=============================================================
+Função:
+
+Realiza a precificação das opções utilizando volatilidade diária dinâmica.
+
+Saídas:
+
+RESULTADOS_MC_OPCAO_B/
+├── Opcoes_MC_Dinamica_2019.xlsx
+├── ...
+├── Opcoes_MC_Dinamica_2024.xlsx
+└── Opcoes_MC_Dinamica_2019_2024_CONSOLIDADO.xlsx
+
+11.4 Cálculo das Métricas
+
+Script:
+
 python 04_metricas.py
 
-Saídas:
-    /METRICAS_MC/Metricas_MC.xlsx
-    /METRICAS_MC/Rankings_MC.xlsx
 
-=============================================================
-5) Dashboard Excel com slicers
-=============================================================
+Função:
+
+Calcula as métricas de erro utilizadas para avaliar o desempenho dos modelos.
+
+Métricas:
+
+RMSE — Root Mean Squared Error;
+MAE — Mean Absolute Error;
+MAPE — Mean Absolute Percentage Error;
+SMAPE — Symmetric Mean Absolute Percentage Error.
+
+Saídas:
+
+METRICAS_MC/
+├── Metricas_MC.xlsx
+└── Rankings_MC.xlsx
+
+11.5 Dashboard Excel
+
+Script:
+
 python 05_dashboards_excel.py
 
-Saída:
-    /DASHBOARDS/Dashboard_Opcoes_MC.xlsx
 
-=============================================================
-6) Heatmaps avançados (Métricas + A vs B)
-=============================================================
+Função:
+
+Gera o dashboard consolidado em Excel, incluindo os recursos de análise e filtros disponíveis no arquivo.
+
+Saída:
+
+DASHBOARDS/
+└── Dashboard_Opcoes_MC.xlsx
+
+11.6 Heatmaps Avançados
+
+Script:
+
 python 06_heatmaps.py
 
-Saídas:
-    /HEATMAPS_MC/RMSE/*.png
-    /HEATMAPS_MC/MAE/*.png
-    /HEATMAPS_MC/MAPE/*.png
-    /HEATMAPS_MC/SMAPE/*.png
-    /HEATMAPS_MC/COMPARATIVO_A_B/*.png
 
-=============================================================
-7) Correlação entre erro de sigma e erro de opções
-=============================================================
+Função:
+
+Gera heatmaps para análise das métricas de desempenho e comparação entre as abordagens de Monte Carlo.
+
+Saídas:
+
+HEATMAPS_MC/
+├── RMSE/
+│   └── *.png
+│
+├── MAE/
+│   └── *.png
+│
+├── MAPE/
+│   └── *.png
+│
+├── SMAPE/
+│   └── *.png
+│
+└── COMPARATIVO_A_B/
+    └── *.png
+
+11.7 Correlação entre Erro de Volatilidade e Erro de Opções
+
+Script:
+
 python 07_correlacao_sigma_erros.py
 
-Saídas:
-    /CORRELACAO_SIGMA/Correlacoes_sigma_erros.csv
-    /CORRELACAO_SIGMA/SCATTERS/*.png
 
-=============================================================
-8) Dashboard interativo Plotly (HTML)
-=============================================================
+Função:
+
+Analisa a relação entre os erros associados às estimativas de volatilidade e os erros de precificação das opções.
+
+Saídas:
+
+CORRELACAO_SIGMA/
+├── Correlacoes_sigma_erros.csv
+└── SCATTERS/
+    └── *.png
+
+11.8 Dashboard Interativo em Plotly
+
+Script:
+
 python 08_dashboard_plotly.py
 
-Saída:
-    /DASHBOARDS/dashboard_plotly_opcoes_mc.html
 
-=============================================================
-9) Relatório final unificado (Word/PDF)
-=============================================================
+Função:
+
+Gera um dashboard interativo para exploração dos resultados de precificação e desempenho dos modelos.
+
+Saída:
+
+DASHBOARDS/
+└── dashboard_plotly_opcoes_mc.html
+
+
+O arquivo HTML pode ser aberto diretamente em um navegador.
+
+11.9 Relatório Final Unificado
+
+Script:
+
 python 09_relatorio_final_tese.py
 
+
+Função:
+
+Consolida os principais resultados do projeto em um relatório técnico destinado à documentação e análise dos resultados.
+
 Saídas:
-    /RELATORIOS/Relatorio_Final_Opcoes_MC.docx
-    /RELATORIOS/Relatorio_Final_Opcoes_MC.pdf (se docx2pdf disponível)
+
+RELATORIOS/
+├── Relatorio_Final_Opcoes_MC.docx
+└── Relatorio_Final_Opcoes_MC.pdf
 
 
--------------------------------------------------------------
-OBSERVAÇÕES IMPORTANTES
--------------------------------------------------------------
+O arquivo PDF será gerado automaticamente caso o docx2pdf esteja instalado e o ambiente seja compatível.
 
-• Os módulos são independentes, mas devem ser executados
-  *na ordem definida*.
+12. Fluxo Geral do Projeto
 
-• A pasta /dados/ deve conter as 5 planilhas originais
-  com as volatilidades (HAR, EGARCH, etc).
+O fluxo completo pode ser resumido da seguinte forma:
 
-• A conversão automática para PDF depende do Windows.
-  Em Linux/Mac, abra o DOCX e exporte manualmente.
+                    PARTE 1
+                       │
+                       ▼
+          ┌─────────────────────────┐
+          │ Modelos de Volatilidade │
+          └─────────────────────────┘
+                       │
+        ┌──────────────┼──────────────┐
+        ▼              ▼              ▼
+     HAR-RV         EGARCH           GJR
+        │              │              │
+        └──────────────┼──────────────┘
+                       │
+                EGARCH-t / GJR-t
+                       │
+                       ▼
+             Séries de Volatilidade
+                       │
+                       ▼
+                    PARTE 2
+                       │
+                       ▼
+              01_importacao_merge
+                       │
+                       ▼
+             ┌─────────┴─────────┐
+             │                   │
+             ▼                   ▼
+       OPÇÃO A               OPÇÃO B
+   σ anualizada            σ dinâmica
+     constante               diária
+             │                   │
+             └─────────┬─────────┘
+                       ▼
+                04_metricas
+                       │
+             ┌─────────┼─────────┐
+             ▼         ▼         ▼
+          Rankings  Heatmaps  Correlações
+             │         │         │
+             └─────────┼─────────┘
+                       ▼
+              Dashboards / Plotly
+                       │
+                       ▼
+                Relatório Final
 
-• Todos os caminhos são relativos à pasta raiz
-  do projeto. Altere se necessário.
+13. Observações Importantes
+Os cinco modelos da Parte 1 são independentes entre si.
+Os resultados da Parte 1 constituem os principais dados de entrada da Parte 2.
+A pasta dados/ deve conter as cinco planilhas de volatilidade necessárias para a execução da Parte 2.
+Os módulos da Parte 2 devem ser executados na ordem definida neste README.
+Os caminhos utilizados pelos scripts são relativos à pasta raiz do projeto.
+Caso a estrutura de diretórios seja alterada, os caminhos dos scripts deverão ser ajustados.
+A geração do relatório em PDF depende da disponibilidade e configuração do docx2pdf.
+Em ambientes Linux/macOS, caso a conversão automática não funcione, o arquivo .docx pode ser aberto em um editor compatível e exportado manualmente para PDF.
+Recomenda-se manter os arquivos intermediários e resultados em suas respectivas pastas para facilitar a rastreabilidade e a reprodução dos experimentos.
+14. Resumo dos Modelos e Métodos
+Categoria	Modelos / Métodos
+Volatilidade	HAR-RV
+Volatilidade	EGARCH
+Volatilidade	GJR
+Volatilidade	EGARCH-t
+Volatilidade	GJR-t
+Precificação	Monte Carlo — σ constante
+Precificação	Monte Carlo — σ dinâmica
+Métricas	RMSE, MAE, MAPE, SMAPE
+Visualização	Heatmaps
+Dashboard	Excel
+Dashboard	Plotly / HTML
+Relatório	Word / PDF
+15. Resultado Final
 
-=============================================================
+Ao final da execução completa do pipeline, o projeto disponibiliza:
+
+Séries de volatilidade estimadas pelos cinco modelos;
+Preços de opções CALL e PUT via Monte Carlo;
+Resultados para volatilidade constante e dinâmica;
+Métricas de erro de precificação;
+Rankings de desempenho;
+Heatmaps comparativos;
+Análises de correlação;
+Dashboard Excel;
+Dashboard interativo em Plotly;
+Relatório técnico final em Word/PDF.
 FIM DO README
-=============================================================
